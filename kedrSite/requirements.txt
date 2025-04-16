@@ -1,9 +1,13 @@
 asgiref==3.8.1
 Django==4.2.20
 django-appconf==1.1.0
+django-extensions==4.1
 djangorestframework==3.16.0
+graphviz==0.20.3
 pillow==11.1.0
 psycopg2==2.9.10
+pydotplus==2.0.2
+pyparsing==3.2.3
 pytz==2025.2
 sqlparse==0.5.3
 typing_extensions==4.13.0

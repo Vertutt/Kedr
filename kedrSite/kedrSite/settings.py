@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'trees.apps.TreesConfig',
     'users',
+    'django_extensions'
 ]
 
 MIDDLEWARE = [

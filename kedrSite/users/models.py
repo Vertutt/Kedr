@@ -8,6 +8,9 @@ from .managers import CustomUserManager
 
 class CustomUser(AbstractUser):
     username = models.CharField(max_length= 256, unique= True)
+    first_name = models.CharField(max_length=256)
+    last_name = models.CharField(max_length=256)
+    surname = models.CharField(max_length=256)
     email = models.EmailField(_('email address'), unique= True, null=True)
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="phone number entered in wrong format")
     phone_number = models.CharField(_('phone number'),validators=[phone_regex], unique=True,
