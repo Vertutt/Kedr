@@ -7,8 +7,8 @@ from users.models import CustomUser
 # Create your models here.
 class Trees(models.Model):
     title = models.CharField(max_length=100, default='Дерево')
-    content = models.TextField(blank=True)
-    picture = models.ImageField(null='true')
+    content = models.TextField(null=True)
+    picture = models.ImageField(null=True)
     latitude = models.FloatField()
     longitude = models.FloatField()
-    owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="trees_owned", null=True )
+    owner = models.ForeignKey(CustomUser, on_delete=models.DO_NOTHING, related_name="trees_owned", null=True )
