@@ -12,3 +12,12 @@
 фронтом, если что, пиши мне.
 
 Папка frontend не нужна и не используется, можешь на нее не обращать внимания
+ энд-пойнты:
+/djoser-auth/token/login/       djoser.views.TokenCreateView    login - вход
+/djoser-auth/token/logout/      djoser.views.TokenDestroyView   logout - выход
+/api/v1/trees/  trees.views.TreesAPIList        trees - все деревья со всеми данными
+/api/v1/trees/<int:pk>/ trees.views.TreesAPIDetails     tree - одно дерево с данными о нем
+/api/v1/trees_coordinates/      trees.views.TreesAPICoordinates trees coordinates - координаты всех деревьев
+/api/v1/djoser-auth/users/      djoser.views.UserViewSet        customuser-list - на данный момент используется для регистрации
+
+
