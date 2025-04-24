@@ -1,10 +1,7 @@
-from email.errors import NonPrintableDefect
-
-from django.utils.text import normalize_newlines
 
 from users.models import CustomUser
 from django.db.models import  Q
-from django.contrib.auth.backends import ModelBackend, UserModel
+from django.contrib.auth.backends import ModelBackend
 from django.contrib.auth import get_user_model
 
 
@@ -16,19 +13,19 @@ class CustomAuthBackend(ModelBackend):
 
 
     def get_user(self, user_id):
-        UserModel = get_user_model()
+        userModel = get_user_model()
         try:
             return CustomUser.objects.get(pk=user_id)
-        except UserModel.DoesNotExist:
+        except userModel.DoesNotExist:
             return  None
 
     def authenticate(self, request,username = None, email= None, phone_number = None, password= None, **kwargs):
-        UserModel = get_user_model()
+        userModel = get_user_model()
         try:
-            user = UserModel.objects.get(
+            user = userModel.objects.get(
                 Q(email=username) | Q(phone_number=username)
             )
-        except UserModel.DoesNotExist:
+        except (userModel.DoesNotExist, userModel.MultipleObjectsReturned):
             return None
 
         return user if user.check_password(password) else None

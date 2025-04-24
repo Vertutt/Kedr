@@ -15,8 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
-
+from django.urls import path, include, re_path
 
 from trees.views import TreesAPIList, TreesAPIDetails, TreesAPICoordinates
 from users.views import CreateUserView
@@ -28,4 +27,6 @@ urlpatterns = [
     path('api/v1/trees/<int:pk>/',TreesAPIDetails.as_view(), name = 'tree'),#инфа об определенном 1 дереве
     path('api/v1/user/register/', CreateUserView.as_view(), name='register'),#регистрация пользователя
     path('api/v1/auth/', include('rest_framework.urls')),#+ login/ или  logout/  вход и выход из учетки
+    path('api/v1/djoser-auth/', include('djoser.urls')),#
+    re_path(r'^djoser-auth/', include('djoser.urls.authtoken')),#
 ]

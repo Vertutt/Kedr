@@ -18,7 +18,7 @@ class CustomUser(AbstractUser):
 
     is_verified = models.BooleanField(default=False)
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'surname']
 
     objects = CustomUserManager()
 

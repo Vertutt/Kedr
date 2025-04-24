@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 
-from django.conf.global_settings import AUTHENTICATION_BACKENDS
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -42,7 +42,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'trees.apps.TreesConfig',
     'users',
-    'django_extensions'
+    'django_extensions',
+    'djoser',
+    'rest_framework.authtoken'
 ]
 
 MIDDLEWARE = [
@@ -106,6 +108,19 @@ DATABASES = {
 #
 # }
 
+DJOSER = {
+    'SERIALIZERS' : {
+        'user_create' : 'users.serializers.UserSerializer'
+    }
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+         'rest_framework.authentication.SessionAuthentication',
+    ]
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
