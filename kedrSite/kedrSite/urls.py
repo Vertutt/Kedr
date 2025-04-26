@@ -21,12 +21,13 @@ from django.urls import path, include, re_path
 from django.conf import settings
 
 from kedrSite.views import UserConfirmEmailView
-from trees.views import TreesAPIList, TreesAPIDetails, TreesAPICoordinates
+from trees.views import TreesAPIList, TreesAPIDetails, TreesAPICoordinates, TreeAPICreate
 from users.views import CreateUserView
 
 urlpatterns = [
     path('admin/', admin.site.urls),#админка, логин admin пароль 1234
     path('api/v1/trees/',TreesAPIList.as_view(), name = 'trees'),#Список всех деревьев с их данными
+    path('api/v1/add_tree/',TreeAPICreate.as_view(), name = 'add tree'),#Список всех деревьев с их данными
     path('api/v1/trees_coordinates/',TreesAPICoordinates.as_view(), name = 'trees coordinates'),#коорды все деревьев
     path('api/v1/trees/<int:pk>/',TreesAPIDetails.as_view(), name = 'tree'),#инфа об определенном 1 дереве
     path('api/v1/user/register/', CreateUserView.as_view(), name='register'),#регистрация пользователя
