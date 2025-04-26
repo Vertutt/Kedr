@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'users',
     'django_extensions',
     'djoser',
-    'rest_framework.authtoken'
+    'rest_framework.authtoken',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
