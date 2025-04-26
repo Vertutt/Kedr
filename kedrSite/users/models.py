@@ -17,6 +17,7 @@ class CustomUser(AbstractUser):
                                     max_length=19, null=True)
 
     is_verified = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=False)
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['first_name', 'last_name', 'surname']
 
