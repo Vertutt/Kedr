@@ -1,3 +1,4 @@
+
 """
 Django settings for kedrSite project.
 
@@ -10,24 +11,22 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
+from dotenv import load_dotenv
 from pathlib import Path
 
-
-
+load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-in)*#r8hkgr9t!4xbm&0bms3zr#sh)tnt$1#z3wp45_4vqa!@j'
+SECRET_KEY = os.environ.get('SECRET_KEY', default='django-insecure-in)*#r8hkgr9t!4xbm&0bms3zr#sh)tnt$1#z3wp45_4vqa!@j')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = str(os.getenv("HOSTS_ALLOWED")).split(' ')
 
 
 # Application definition
@@ -42,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'trees.apps.TreesConfig',
     'users',
+    'promocodes',
     'django_extensions',
     'djoser',
     'rest_framework.authtoken',
@@ -62,14 +62,22 @@ MIDDLEWARE = [
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8000",
+    'http://88.218.67.221:3000',
+    'http://88.218.67.221:1337',
+    'http://томскстолицакедра.рф',
+    'http://xn--80aaldnlcfhtc4aebkf5e.xn--p1ai'
 ]
 
-# CORS_ALLOW_ALL_ORIGINS = True
+#CORS_ALLOW_ALL_ORIGINS = True
 
 
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:8000",
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+    'http://88.218.67.221:3000',
+    'http://88.218.67.221:1337',
+    'http://томскстолицакедра.рф',
+    'http://xn--80aaldnlcfhtc4aebkf5e.xn--p1ai',
 ]
 
 ROOT_URLCONF = 'kedrSite.urls'
@@ -96,32 +104,23 @@ WSGI_APPLICATION = 'kedrSite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': os.environ.get('POSTGRES_ENGINE'),
+        'NAME': os.environ.get('POSTGRES_DB'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'HOST': os.environ.get('POSTGRES_HOST'),
+        'PORT': os.environ.get('POSTGRES_PORT'),
     }
 }
-
-# DATABASES = {
-#
-#     'default': {
-#
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#
-#         'NAME': 'kedrSite',
-#
-#         'USER': 'postgres',
-#
-#         'PASSWORD': '1234',
-#
-#         'HOST': '',
-#
-#         'PORT': '',
-#
-#     }
-#
-# }
 
 DJOSER = {
     'SERIALIZERS' : {
@@ -132,20 +131,21 @@ DJOSER = {
     #'SEND_CONFIRMATION_EMAIL': True,
     #'USERNAME_CHANGED_EMAIL_CONFIRMATION': True,
     #'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True,
-    #'PASSWORD_RESET_CONFIRM': True,
-    #'PASSWORD_RESET_CONFIRM_URL': 'api/v1/djoser-auth/users/reset_password_confirm/',
+    'PASSWORD_RESET_CONFIRM': True,
+    'PASSWORD_RESET_CONFIRM_URL': 'api/v1/djoser-auth/users/reset_password_confirm/{uid}/{token}',
     #'USERNAME_RESET_CONFIRM_URL': 'api/v1/email/reset/confirm/{uid}/{token}',
     'SEND_ACTIVATION_EMAIL': True,
+    'EMAIL_FRONTEND_URL' : 'томскстолицакедра.рф/{uid}/{token}',
     'ACTIVATION_URL': 'api/v1/activate/{uid}/{token}',
 }
 
-DEFAULT_FROM_EMAIL = 'admin@mail.com'
+DEFAULT_FROM_EMAIL = 'support@xn--80aaldnlcfhtc4aebkf5e.xn--p1ai'
 SERVER_EMAIL = 'admin@mail.com'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = 'connect.smtp.bz'
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'wettiret@gmail.com'
-EMAIL_HOST_PASSWORD = 'afyjeyhfimsdiofd'
+EMAIL_HOST_USER = 'krysanovmatvei@gmail.com'
+EMAIL_HOST_PASSWORD = 'sRaRnQOJXaDy'
 EMAIL_PORT = 587
 
 REST_FRAMEWORK = {
@@ -178,9 +178,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Novosibirsk'
 
 USE_I18N = True
 
@@ -193,11 +193,11 @@ AUTH_USER_MODEL = "users.CustomUser"
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MEDIA_URL = '/media/'
+MEDIA_URL = 'http://88.218.67.221:1337/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

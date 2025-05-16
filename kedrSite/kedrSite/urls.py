@@ -23,6 +23,7 @@ from django.conf import settings
 from kedrSite.views import UserConfirmEmailView
 from trees.views import TreesAPIList, TreesAPIDetails, TreesAPICoordinates, TreeAPICreate
 from users.views import CreateUserView
+from promocodes.views import PromocodeConfirmView
 
 urlpatterns = [
     path('admin/', admin.site.urls),#админка, логин admin пароль 1234
@@ -34,6 +35,7 @@ urlpatterns = [
     path('api/v1/auth/', include('rest_framework.urls')),#+ login/ или  logout/  вход и выход из учетки
     path('api/v1/djoser-auth/', include('djoser.urls')),#
     path('api/v1/activate/<str:uid>/<str:token>', UserConfirmEmailView.as_view()),
+    path('api/v1/promocodes/check/<str:promo>/', PromocodeConfirmView.as_view()),
     re_path(r'^djoser-auth/', include('djoser.urls.authtoken')),#
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
