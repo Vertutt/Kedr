@@ -25,6 +25,14 @@ SECRET_KEY = os.environ.get('SECRET_KEY', default='django-insecure-in)*#r8hkgr9t
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+CSRF_COOKIE_SAMESITE = 'None'
+CSRF_COOKIE_SECURE = True  # Только для HTTPS!
+SESSION_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SECURE = True
+# SECURE_SSL_REDIRECT = True
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 ALLOWED_HOSTS = str(os.getenv("HOSTS_ALLOWED")).split(' ')
 
@@ -32,6 +40,7 @@ ALLOWED_HOSTS = str(os.getenv("HOSTS_ALLOWED")).split(' ')
 # Application definition
 
 INSTALLED_APPS = [
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -45,7 +54,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'djoser',
     'rest_framework.authtoken',
-    'corsheaders',
+    'imagekit',
 ]
 
 MIDDLEWARE = [
@@ -64,8 +73,8 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     'http://88.218.67.221:3000',
     'http://88.218.67.221:1337',
-    'http://томскстолицакедра.рф',
-    'http://xn--80aaldnlcfhtc4aebkf5e.xn--p1ai'
+    'https://томскстолицакедра.рф',
+    'https://xn--80aaldnlcfhtc4aebkf5e.xn--p1ai'
 ]
 
 #CORS_ALLOW_ALL_ORIGINS = True
@@ -77,7 +86,9 @@ CSRF_TRUSTED_ORIGINS = [
     'http://88.218.67.221:3000',
     'http://88.218.67.221:1337',
     'http://томскстолицакедра.рф',
-    'http://xn--80aaldnlcfhtc4aebkf5e.xn--p1ai',
+    'https://томскстолицакедра.рф',
+    'https://xn--80aaldnlcfhtc4aebkf5e.xn--p1ai',
+    'https://xn--80aaldnlcfhtc4aebkf5e.xn--p1ai:1337',
 ]
 
 ROOT_URLCONF = 'kedrSite.urls'
@@ -135,8 +146,10 @@ DJOSER = {
     'PASSWORD_RESET_CONFIRM_URL': 'api/v1/djoser-auth/users/reset_password_confirm/{uid}/{token}',
     #'USERNAME_RESET_CONFIRM_URL': 'api/v1/email/reset/confirm/{uid}/{token}',
     'SEND_ACTIVATION_EMAIL': True,
-    'EMAIL_FRONTEND_URL' : 'томскстолицакедра.рф/{uid}/{token}',
-    'ACTIVATION_URL': 'api/v1/activate/{uid}/{token}',
+    'EMAIL_FRONTEND_URL' : 'https://томскстолицакедра.рф/confirm-registration/{uid}/{token}',
+    'EMAIL_FRONTEND_DOMAIN' : 'томскстолицакедра.рф',
+    'EMAIL_FRONTEND_PROTOCOL' : 'https',
+    'ACTIVATION_URL': 'confirm-registration/{uid}/{token}',
 }
 
 DEFAULT_FROM_EMAIL = 'support@xn--80aaldnlcfhtc4aebkf5e.xn--p1ai'
@@ -199,5 +212,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MEDIA_URL = 'http://88.218.67.221:1337/media/'
+MEDIA_URL = 'https://томскстолицакедра.рф/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

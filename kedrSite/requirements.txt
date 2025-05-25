@@ -8,6 +8,7 @@ Django==4.2.20
 django-appconf==1.1.0
 django-cors-headers==4.7.0
 django-extensions==4.1
+django-imagekit==5.0.0
 djangorestframework==3.16.0
 djangorestframework_simplejwt==5.5.0
 djoser==2.3.1
@@ -15,6 +16,7 @@ dotenv==0.9.9
 graphviz==0.20.3
 idna==3.10
 oauthlib==3.2.2
+pilkit==3.0
 pillow==11.1.0
 psycopg2-binary==2.9.10
 pycparser==2.22

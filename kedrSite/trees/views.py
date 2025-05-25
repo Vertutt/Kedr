@@ -13,14 +13,19 @@ class TreeAPICreate(generics.CreateAPIView):
     @transaction.atomic
     def post(self, request, format=None):
         images = request.FILES.getlist('images', [])
-       # print(len(images))
-       # request.data.pop('images')
+        request.data.pop('images')
         serialized_data = self.serializer_class(data=request.data)
+        user = None
+        if request and hasattr(request, "user"):
+            user = self.request.user
+        
+       # serialized_data.owner_name = str(user.first_name)+str(user.surname)+str(user.last_name)
         tree = None
         
         if serialized_data.is_valid():
           #  print('awdasbewghgferghgfe')
-            tree = Trees.objects.create(**serialized_data.data)
+            #tree = Trees.objects.create(**serialized_data.data)
+            tree = serialized_data.save(owner = user, owner_name =  f"{user.last_name} {user.first_name} {user.surname}")
         
         image_dict = {}
         if tree and len(images) > 0:
@@ -34,7 +39,7 @@ class TreeAPICreate(generics.CreateAPIView):
                 tree_image_serialized_data = TreesImageSerializer(data=image_dict)
                 
                 if tree_image_serialized_data.is_valid(raise_exception=True):
-                    print(tree_image_serialized_data.data)
+                   #tree_image_serialized_data.save()
                     image_obj = TreesImages.objects.create(**tree_image_serialized_data.validated_data)
 
 

@@ -8,7 +8,7 @@ class TreesImageSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class TreesSerializer(serializers.ModelSerializer):
-    #images = TreesImageSerializer(many=True, required=False)
+    images = TreesImageSerializer(many=True, required=False)
     class Meta:
         model = Trees
         fields = '__all__'
@@ -21,4 +21,4 @@ class TreesSerializer(serializers.ModelSerializer):
 class TreesCoordinatesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Trees
-        fields = ['latitude', 'longitude']
+        fields = ['id','latitude', 'longitude']
