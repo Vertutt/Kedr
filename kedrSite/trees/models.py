@@ -4,7 +4,6 @@ from imagekit.processors import ResizeToFill, ResizeToFit
 from users.models import CustomUser
 import datetime
 
-# Create your models here.
 class Trees(models.Model):
     title = models.CharField(max_length=100, default='Дерево')
     content = models.TextField(null=True)

@@ -7,7 +7,7 @@ then
     while ! nc -z $POSTGRES_HOST $POSTGRES_PORT; do
       sleep 0.1
     done
-    echo "Опа!"
+    echo "Запуск Django..."
 fi
 # Выполняем миграции
 python manage.py makemigrations
