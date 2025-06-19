@@ -1,0 +1,87 @@
+# Поднимаем два сервиса, django И node
+services:
+  django:
+    #говорим что build будет из dockerfile который располагается ./django/django_project/
+    build: ./kedrSite/
+    platform: linux/amd64
+    # имя контейнера
+    container_name: djangoapp
+    # перезапускать контейнер при завершении выполнения работы или при аварийном завершении
+    restart: always
+    # проброс портов внутрь контейнера, 8000 порт на хост машине будет проброшен внутрь контейнера на такой же 8000 порт
+    expose:
+      [8000]
+    # команда при старте контейнера
+    command: >
+      sh -c "python manage.py runserver 0.0.0.0:8000"
+    # Для статики мы подключаем два volume (чтобы при перезапуске наши данные не пропадали)), создадим их ниже.
+    volumes:
+      - django_static_volume:/usr/src/app/static
+      - django_media_volume:/usr/src/app/media
+      - ./kedrSite:/usr/src/app/
+    # подключаем к сети myNetwork (в целом не обязательно, но до кучи чтоб было)
+    depends_on:
+      - postgres
+
+    environment:
+      DB_HOST: postgresdb  
+      DB_PORT: 5432
+
+    env_file:
+      - ./.env
+
+  node:
+    # Аналогично, build из ./reactapp/dockerfile
+    build: ./kedr_new
+    # имя контейнера
+    container_name: reactapp
+    # рестарт
+    restart: always
+    # порты
+    ports:
+      - 3000:3000
+    # команда при запуске
+    command: npm start
+    # Зависимость. нет смысла ноде, если некому отдать ей данные. поэтому сначала стартуем сервис django, а за ней node
+    depends_on:
+      - django
+    volumes:
+      - ./kedr_new/public/:/usr/src/app/public/
+      - ./kedr_new/src/:/usr/src/app/src/
+
+
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    ports:
+      - 1337:1337
+      - 80:80
+      - 443:443
+    depends_on:
+      - django
+    volumes:
+      - django_static_volume:/home/src/app/static
+      - django_media_volume:/home/src/app/media 
+
+  postgres:
+      # Так же разворачиваем с готового контейнера
+      image: postgres:15-alpine
+      platform: linux/amd64
+      container_name: postgresdb
+      ports:
+        - 5432:5432
+      # Чтобы наши данные не пропадали при перезапуске подключим volume
+      volumes:
+        - postgres_volume:/var/lib/postgresql/data/
+      # Переменные окружения. их надо будет передавать в django.
+      environment:
+        - POSTGRES_USER=admin
+        - POSTGRES_PASSWORD=1234
+        - POSTGRES_DB=django_db
+        - POSTGRES_HOST = 88.218.67.221
+        - POSTGRES_PORT = 5432
+
+volumes:
+    postgres_volume:
+    django_static_volume:
+    django_media_volume:
