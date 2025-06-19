@@ -14,12 +14,12 @@ class UserConfirmEmailView(APIView):
         try:
             id = urlsafe_base64_decode(uid)
             user = userModel.objects.get(pk=id)
-        except : #TypeError, ValueError, OverflowError,  - not working
+        except :
             user = None
 
         if user is not None and default_token_generator.check_token(user, token):
             user.is_active = True
             user.save()
-            return redirect('http://88.218.67.221:3000/#')
+            return Response(status= status.HTTP_200_OK)
         else:
             return Response({"Content" : "Could not confirm email"},status = status.HTTP_500_INTERNAL_SERVER_ERROR)

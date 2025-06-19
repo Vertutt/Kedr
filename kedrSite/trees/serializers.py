@@ -1,7 +1,6 @@
-from django.template.context_processors import request
 from rest_framework import serializers
 from .models import Trees, TreesImages
-
+import os
 class TreesImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = TreesImages
@@ -13,10 +12,6 @@ class TreesSerializer(serializers.ModelSerializer):
         model = Trees
         fields = '__all__'
         extra_kwargs = {'owner':{'read_only':True}}
-    
-    def get_images(self, obj):
-      images = obj.product_images.all()
-      return TreesImageSerializer(images, many=True)
 
 class TreesCoordinatesSerializer(serializers.ModelSerializer):
     class Meta:
