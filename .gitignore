@@ -1,9 +1,0 @@
-# Project exclude paths
-/shelf/
-/workspace.xml
-/kedr_new
-/.env
-/.vscode
-/.venv
-/db.sqlite3
-/.gitignore
